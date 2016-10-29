@@ -12,6 +12,7 @@ let testProjectFiles =
 let testDlls =
   !! (testDir + "**/*.Tests.dll")
 let packagesDir = "./packages/"
+let isAppVeyorBuild = buildServer = BuildServer.AppVeyor
 
 let clean _ =
     CleanDirs [buildDir; testDir; packagesDir;]
@@ -26,7 +27,11 @@ let buildReleaseTests _ =
   
 let testRelease _ =
   testDlls
-    |> xUnit2 (fun p -> { p with ToolPath = "./.tools/xunit.runner.console/tools/xunit.console.exe"})//{ p with ForceAppVeyor = true }
+    |> xUnit2 (fun p -> 
+      { p with 
+          ToolPath = ".tools/xunit.runner.console/tools/xunit.console.exe"
+          ShadowCopy = false 
+          ForceAppVeyor = isAppVeyorBuild})
 
 let restorePackages _ =
   RestorePackages()
