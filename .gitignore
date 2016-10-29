@@ -1,0 +1,8 @@
+*.suo
+*/obj/**
+*/bin/**
+packages/**
+.fake/**
+**/*ncrunch*
+build/**
+test/**
