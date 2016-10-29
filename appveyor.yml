@@ -1,3 +1,4 @@
+build_script:
 assembly_info:
   patch: false
 test: off
