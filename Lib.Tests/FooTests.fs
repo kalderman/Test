@@ -5,6 +5,10 @@ open System
 module ``Foo Tests`` = 
   open Xunit
   open Lib
+
+  [<Fact>]
+  let ``Foo can be constructed`` () =
+    new Foo()
   
   [<Fact>]
   let ``Foo returns correct result`` () =
