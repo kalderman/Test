@@ -11,9 +11,10 @@ let testProjectFiles =
   !! ("**/" + projectName + ".Tests.fsproj")
 let testDlls =
   !! (testDir + "**/*.Tests.dll")
+let packagesDir = "./packages/"
 
 let clean _ =
-    CleanDirs [buildDir; testDir;]
+    CleanDirs [buildDir; testDir; packagesDir;]
 
 let buildRelease _ =
   MSBuildRelease buildDir "Build" buildProjectFiles
@@ -27,13 +28,18 @@ let testRelease _ =
   testDlls
     |> xUnit2 (fun p -> p)//{ p with ForceAppVeyor = true }
 
+let restorePackages _ =
+  RestorePackages |> ignore
 
 Target "Clean" clean
+Target "RestorePackages" restorePackages
 Target "BuildRelease" buildRelease 
 Target "BuildReleaseTests" buildReleaseTests
 Target "TestRelease" testRelease
 
-"Clean" ==> "BuildRelease"
+"Clean" ==> "RestorePackages"
+"RestorePackages" ==> "BuildRelease"
+"RestorePackages" ==> "BuildReleaseTests"
 "BuildRelease" ==> "BuildReleaseTests"
 "BuildReleaseTests" ==> "TestRelease"
 
