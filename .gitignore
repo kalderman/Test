@@ -6,3 +6,4 @@ packages/**
 **/*ncrunch*
 build/**
 test/**
+.tools/**

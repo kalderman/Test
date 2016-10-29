@@ -1,4 +1,4 @@
-#r @"packages/FAKE/tools/FakeLib.dll"
+#r @".tools/FAKE/tools/FakeLib.dll"
 open Fake
 open Fake.Testing.XUnit2
 
@@ -26,10 +26,10 @@ let buildReleaseTests _ =
   
 let testRelease _ =
   testDlls
-    |> xUnit2 (fun p -> p)//{ p with ForceAppVeyor = true }
+    |> xUnit2 (fun p -> { p with ToolPath = "./.tools/xunit.runner.console/tools/xunit.console.exe"})//{ p with ForceAppVeyor = true }
 
 let restorePackages _ =
-  RestorePackages |> ignore
+  RestorePackages()
 
 Target "Clean" clean
 Target "RestorePackages" restorePackages
